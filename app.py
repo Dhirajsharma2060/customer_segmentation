@@ -70,7 +70,7 @@ segment_mapping = {
 }
 
 # Build the Streamlit user interface
-st.title("Indian Customer Segmentation Interface")
+st.title("BazaarWise India:Indian Customer Segmentation Interface")
 st.write(
     "Enter the customer's details below. You can provide the Annual Income either in Lakhs (INR) or in Thousands (USD). "
     "If you select Lakhs (INR), it will be automatically converted to the required unit (thousands USD) for processing. "
