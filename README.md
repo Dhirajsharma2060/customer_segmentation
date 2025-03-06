@@ -53,6 +53,14 @@ To run this project locally, follow these steps:
 ![Example](/images/Screenshot%202025-03-06%20232941.png)
 ![Example](/images/Screenshot%202025-03-06%20233202.png)
 
+## Real-Time Usage
+
+You can also access the real-time version of the application hosted online:
+
+[![BazaarWise India](images/real-time.png)](https://bazaarwise.onrender.com/)
+
+Visit the [BazaarWise India](https://bazaarwise.onrender.com/) application to try it out in real-time.
+
 ## Contributing
 
 We welcome contributions to improve this project. To contribute, please follow these steps:
