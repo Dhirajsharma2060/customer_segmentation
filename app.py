@@ -4,70 +4,79 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Cache the model loading to improve performance
+@st.cache_data
+def load_model():
+    return joblib.load("customer_segmentation_model.joblib")
+
 # Load the trained segmentation model (trained on Mall_Customers.csv)
-model = joblib.load("customer_segmentation_model.joblib")
+model = load_model()
 
 # Updated mapping from cluster label to a descriptive segment for an Indian audience
-segment_mapping = {
-    0: {
-        "name": "Regular Shoppers",
-        "description": (
-            "These customers have a balanced profile with moderate income and spending habits. "
-            "They represent the average Indian shopper who shops regularly without extreme behaviors."
-        ),
-        "recommendation": (
-            "Engage them with regular offers, loyalty rewards, and festive discounts during occasions like Diwali, Eid, or Holi. "
-            "Check out platforms like [Flipkart Big Billion Days](https://www.flipkart.com/big-billion-days) and "
-            "[Zomato Festive Offers](https://www.zomato.com) for exciting deals."
-        )
-    },
-    1: {
-        "name": "Price Sensitive Shoppers",
-        "description": (
-            "Customers in this group have relatively high incomes but are cautious with their spending. "
-            "They are always on the lookout for the best deals and value for money."
-        ),
-        "recommendation": (
-            "Offer them attractive cashback deals, EMI options, and exclusive discounts during sales events like the "
-            "[Big Billion Days](https://www.flipkart.com/big-billion-days). Consider exploring financial products like "
-            "[SBI Life Insurance](https://www.sbilife.co.in) for smart investments."
-        )
-    },
-    2: {
-        "name": "Budget Conscious",
-        "description": (
-            "These customers have lower incomes and are very mindful of their spending. "
-            "They prioritize saving money and often hunt for the best bargains."
-        ),
-        "recommendation": (
-            "Consider offering deep discount vouchers, limited-time deals, and value-for-money promotions that cater to tight budgets. "
-            "Look out for daily deals on platforms like [Flipkart](https://www.flipkart.com) and "
-            "[Amazon Great Indian Festival](https://www.amazon.in)."
-        )
-    },
-    3: {
-        "name": "Impulsive Buyers",
-        "description": (
-            "This segment, despite having lower incomes, tends to spend significantly when attracted by a good deal. "
-            "They are quick to make spontaneous purchases when influenced by trends or flash sales."
-        ),
-        "recommendation": (
-            "Introduce flash sales, one-day offers, and trend-based promotions—particularly during festive seasons—to capture their interest. "
-            "Platforms like [Flipkart Big Billion Days](https://www.flipkart.com/big-billion-days) and [Zomato](https://www.zomato.com) offer timely deals."
-        )
-    },
-    4: {
-        "name": "Premium Shoppers",
-        "description": (
-            "These customers enjoy high incomes paired with high spending. "
-            "They seek premium experiences and are willing to invest in quality and exclusivity."
-        ),
-        "recommendation": (
-            "Provide them with exclusive pre-launch events, personalized services, and tailor-made loyalty programs that match their upscale lifestyle. "
-            "Consider exploring premium financial products like [LIC](https://www.licindia.in) and premium credit cards for added benefits."
-        )
+@st.cache_data
+def get_segment_mapping():
+    return {
+        0: {
+            "name": "Regular Shoppers",
+            "description": (
+                "These customers have a balanced profile with moderate income and spending habits. "
+                "They represent the average Indian shopper who shops regularly without extreme behaviors."
+            ),
+            "recommendation": (
+                "Engage them with regular offers, loyalty rewards, and festive discounts during occasions like Diwali, Eid, or Holi. "
+                "Check out platforms like [Flipkart Big Billion Days](https://www.flipkart.com/big-billion-days) and "
+                "[Zomato Festive Offers](https://www.zomato.com) for exciting deals."
+            )
+        },
+        1: {
+            "name": "Price Sensitive Shoppers",
+            "description": (
+                "Customers in this group have relatively high incomes but are cautious with their spending. "
+                "They are always on the lookout for the best deals and value for money."
+            ),
+            "recommendation": (
+                "Offer them attractive cashback deals, EMI options, and exclusive discounts during sales events like the "
+                "[Big Billion Days](https://www.flipkart.com/big-billion-days). Consider exploring financial products like "
+                "[SBI Life Insurance](https://www.sbilife.co.in) for smart investments."
+            )
+        },
+        2: {
+            "name": "Budget Conscious",
+            "description": (
+                "These customers have lower incomes and are very mindful of their spending. "
+                "They prioritize saving money and often hunt for the best bargains."
+            ),
+            "recommendation": (
+                "Consider offering deep discount vouchers, limited-time deals, and value-for-money promotions that cater to tight budgets. "
+                "Look out for daily deals on platforms like [Flipkart](https://www.flipkart.com) and "
+                "[Amazon Great Indian Festival](https://www.amazon.in)."
+            )
+        },
+        3: {
+            "name": "Impulsive Buyers",
+            "description": (
+                "This segment, despite having lower incomes, tends to spend significantly when attracted by a good deal. "
+                "They are quick to make spontaneous purchases when influenced by trends or flash sales."
+            ),
+            "recommendation": (
+                "Introduce flash sales, one-day offers, and trend-based promotions—particularly during festive seasons—to capture their interest. "
+                "Platforms like [Flipkart Big Billion Days](https://www.flipkart.com/big-billion-days) and [Zomato](https://www.zomato.com) offer timely deals."
+            )
+        },
+        4: {
+            "name": "Premium Shoppers",
+            "description": (
+                "These customers enjoy high incomes paired with high spending. "
+                "They seek premium experiences and are willing to invest in quality and exclusivity."
+            ),
+            "recommendation": (
+                "Provide them with exclusive pre-launch events, personalized services, and tailor-made loyalty programs that match their upscale lifestyle. "
+                "Consider exploring premium financial products like [LIC](https://www.licindia.in) and premium credit cards for added benefits."
+            )
+        }
     }
-}
+
+segment_mapping = get_segment_mapping()
 
 # Build the Streamlit user interface
 st.title("BazaarWise India : Indian Customer Segmentation Interface")
